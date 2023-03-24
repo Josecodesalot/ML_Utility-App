@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ml_utility/pages/text_recognition_page.dart';
 import 'package:ml_utility/utilities/constants.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -42,26 +43,34 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
-                      height: containerDim,
-                      width: containerDim,
-                      margin: containerMargin,
-                      padding: containerPadding,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(17),
-                        boxShadow: containerShadow,
-                        color: containerColor,
-                      ),
-                      child: Center(
-                        child: Text("Text Recognition",
-                            textAlign: TextAlign.center,
-                            style: GoogleFonts.getFont(
-                              'Raleway',
-                              textStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20.sp,
-                                  fontWeight: FontWeight.w400),
-                            )),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const TextRecognition()));
+                      },
+                      child: Container(
+                        height: containerDim,
+                        width: containerDim,
+                        margin: containerMargin,
+                        padding: containerPadding,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(17),
+                          boxShadow: containerShadow,
+                          color: containerColor,
+                        ),
+                        child: Center(
+                          child: Text("Text Recognition",
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.getFont(
+                                'Raleway',
+                                textStyle: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20.sp,
+                                    fontWeight: FontWeight.w400),
+                              )),
+                        ),
                       ),
                     ),
                     Container(
