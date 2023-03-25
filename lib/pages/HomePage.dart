@@ -108,7 +108,6 @@ class _HomePageState extends State<HomePage> {
                         boxShadow: containerShadow,
                         color: containerColor,
                       ),
-                      child: Text(_isPermissionGranted.toString()),
                     ),
                     Container(
                       height: containerDim,

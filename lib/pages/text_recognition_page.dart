@@ -61,7 +61,8 @@ class _TextRecognitionState extends State<TextRecognition>
               if (await Permission.camera.isGranted) {
                 getImage(ImageSource.camera);
                 _animationController.reverse();
-              } else if (await Permission.camera.isPermanentlyDenied) {
+              } else if (await Permission.camera.isPermanentlyDenied ||
+                  await Permission.camera.isRestricted) {
                 const SnackBar(
                   content: Text(
                       'Sorry! Camera Permission is denied permanently. Kindly allow it from settings'),
@@ -105,10 +106,10 @@ class _TextRecognitionState extends State<TextRecognition>
                       height: 260.h,
                       fit: BoxFit.scaleDown,
                     )
-                  : Image.network(
-                      "https://www.slntechnologies.com/wp-content/uploads/2017/08/ef3-placeholder-image.jpg",
+                  : Image(
                       width: 320.w,
                       height: 260.h,
+                      image: const AssetImage('assets/images/placeholder.png'),
                     ),
             ),
             GestureDetector(
@@ -179,10 +180,12 @@ class _TextRecognitionState extends State<TextRecognition>
 
     final tempImg = File(image.path);
 
-    setState(() {
-      _image = tempImg;
-      text = "";
-    });
+    setState(
+      () {
+        _image = tempImg;
+        text = "";
+      },
+    );
   }
 
   Future<void> getTextFromImage() async {
@@ -193,9 +196,15 @@ class _TextRecognitionState extends State<TextRecognition>
     String text = recognizedText.text;
     textRecognizer.close();
     print(text);
-    setState(() {
-      isScanning = false;
-      this.text = text;
-    });
+    setState(
+      () {
+        isScanning = false;
+        if (text == "") {
+          this.text = "No Text Recognised";
+        } else {
+          this.text = text;
+        }
+      },
+    );
   }
 }
