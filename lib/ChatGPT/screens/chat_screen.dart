@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:ml_utility/ChatGPT/constants/api_constants.dart';
 import 'package:ml_utility/ChatGPT/services/assets_manager.dart';
+import 'package:ml_utility/ChatGPT/services/network_helper.dart';
 import 'package:ml_utility/ChatGPT/widgets/chat_widget.dart';
-import 'package:ml_utility/utilities/constants.dart';
+
+import '../constants/constants.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key}) : super(key: key);
@@ -17,14 +20,13 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    NetworkHelper.getModels();
     _textEditingController = TextEditingController();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _textEditingController.dispose();
   }
@@ -32,7 +34,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF444654),
+      backgroundColor: chatGPTScaffoldColor,
       appBar: AppBar(
         backgroundColor: chatGPTAppBarColor,
         leading: Padding(
@@ -40,7 +42,7 @@ class _ChatScreenState extends State<ChatScreen> {
           child: Image.asset(AssetsManager.chatgptLogo),
         ),
         elevation: 7.0,
-        title: Text("ChatGPT"),
+        title: const Text("ChatGPT"),
         actions: [
           IconButton(
             onPressed: () {},
@@ -57,9 +59,13 @@ class _ChatScreenState extends State<ChatScreen> {
             Flexible(
               child: ListView.builder(
                 itemBuilder: (context, index) {
-                  return const ChatWidget();
+                  return ChatWidget(
+                    message: chatMessages[index]["msg"].toString(),
+                    index:
+                        int.parse(chatMessages[index]["chatIndex"].toString()),
+                  );
                 },
-                itemCount: 6,
+                itemCount: chatMessages.length,
               ),
             ),
             if (_isTyping) ...[
@@ -68,7 +74,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 size: 18.0,
               )
             ],
-            SizedBox(
+            const SizedBox(
               height: 8.0,
             ),
             Material(
@@ -91,7 +97,9 @@ class _ChatScreenState extends State<ChatScreen> {
                       ),
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        print(models);
+                      },
                       icon: const Icon(
                         Icons.send_sharp,
                         color: Colors.white,

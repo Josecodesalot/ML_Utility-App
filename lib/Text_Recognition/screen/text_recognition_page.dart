@@ -47,7 +47,7 @@ class _TextRecognitionState extends State<TextRecognition>
           "Text Recognition",
         ),
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black87,
       floatingActionButton: FloatingActionBubble(
         items: <Bubble>[
           Bubble(
