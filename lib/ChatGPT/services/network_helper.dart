@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:ml_utility/ChatGPT/constants/api_constants.dart';
 
+import '../constants/auth.dart';
+
 class NetworkHelper {
   static Future<void> getModels() async {
     try {
