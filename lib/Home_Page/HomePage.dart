@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ml_utility/ChatGPT/providers/models_provider.dart';
 import 'package:ml_utility/ChatGPT/screens/chat_screen.dart';
 import 'package:ml_utility/utilities/constants.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 
 import '../Text_Recognition/screen/text_recognition_page.dart';
 
@@ -114,9 +116,17 @@ class _HomePageState extends State<HomePage> {
                 ),
                 GestureDetector(
                   onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ChatScreen())),
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MultiProvider(
+                        providers: [
+                          ChangeNotifierProvider(
+                              create: (_) => ModelsProvider()),
+                        ],
+                        child: const ChatScreen(),
+                      ),
+                    ),
+                  ),
                   child: Container(
                     height: containerDim,
                     width: double.infinity,
