@@ -1,11 +1,16 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ml_utility/ChatGPT/providers/models_provider.dart';
 import 'package:ml_utility/ChatGPT/services/assets_manager.dart';
+import 'package:ml_utility/ChatGPT/services/network_helper.dart';
 import 'package:ml_utility/ChatGPT/widgets/chat_widget.dart';
+import 'package:provider/provider.dart';
 
 import '../constants/constants.dart';
+import '../models/chat_model.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key}) : super(key: key);
@@ -15,30 +20,36 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final bool _isTyping = true;
+  bool _isTyping = false;
   late TextEditingController _textEditingController;
+  late ScrollController _listScrollController;
+  late FocusNode focusNode;
 
   @override
   void initState() {
     super.initState();
     _textEditingController = TextEditingController();
+    _listScrollController = ScrollController();
+    focusNode = FocusNode();
   }
 
   @override
   void dispose() {
     super.dispose();
     _textEditingController.dispose();
+    _listScrollController.dispose();
+    focusNode.dispose();
   }
+
+  List<ChatModel> chatList = [];
 
   @override
   Widget build(BuildContext context) {
-    ModelsProvider provider = ModelsProvider();
+    final modelProvider = Provider.of<ModelsProvider>(context, listen: false);
     return FutureBuilder(
-      future: provider.getAllModels(),
+      future: modelProvider.testConnection(),
       builder: (context, snapshot) {
-        if (snapshot.data == [] ||
-            snapshot.hasError ||
-            (snapshot.hasData && snapshot.data!.isEmpty)) {
+        if (snapshot.data == false || snapshot.hasError) {
           return Scaffold(
             backgroundColor: chatGPTScaffoldColor,
             body: Center(
@@ -74,7 +85,7 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           );
         }
-        if (snapshot.hasData && snapshot.data != []) {
+        if (snapshot.hasData && snapshot.data == true) {
           return Scaffold(
             backgroundColor: chatGPTScaffoldColor,
             appBar: AppBar(
@@ -100,14 +111,14 @@ class _ChatScreenState extends State<ChatScreen> {
                 children: [
                   Flexible(
                     child: ListView.builder(
+                      controller: _listScrollController,
                       itemBuilder: (context, index) {
                         return ChatWidget(
-                          message: chatMessages[index]["msg"].toString(),
-                          index: int.parse(
-                              chatMessages[index]["chatIndex"].toString()),
+                          message: chatList[index].message,
+                          index: chatList[index].chatIndex,
                         );
                       },
-                      itemCount: chatMessages.length,
+                      itemCount: chatList.length,
                     ),
                   ),
                   if (_isTyping) ...[
@@ -128,10 +139,14 @@ class _ChatScreenState extends State<ChatScreen> {
                         children: [
                           Expanded(
                             child: TextField(
+                              focusNode: focusNode,
                               controller: _textEditingController,
                               style: const TextStyle(color: Colors.white),
-                              onSubmitted: (value) {
-                                //TODO On Submit
+                              onSubmitted: (value) async {
+                                if (_textEditingController.text.isNotEmpty) {
+                                  await sendMessage(
+                                      modelProvider: modelProvider);
+                                }
                               },
                               decoration: const InputDecoration.collapsed(
                                   hintText: "How can I help you?",
@@ -139,8 +154,10 @@ class _ChatScreenState extends State<ChatScreen> {
                             ),
                           ),
                           IconButton(
-                            onPressed: () {
-                              print(provider.getModelList);
+                            onPressed: () async {
+                              if (_textEditingController.text.isNotEmpty) {
+                                await sendMessage(modelProvider: modelProvider);
+                              }
                             },
                             icon: const Icon(
                               Icons.send_sharp,
@@ -167,20 +184,62 @@ class _ChatScreenState extends State<ChatScreen> {
                 const SizedBox(
                   height: 30,
                 ),
-                Text("Powering Up ChatGPT",
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.getFont(
-                      'Raleway',
-                      textStyle: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w300),
-                    )),
+                Text(
+                  "Powering Up ChatGPT",
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.getFont(
+                    'Raleway',
+                    textStyle: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w300),
+                  ),
+                ),
               ],
             ),
           ),
         );
       },
+    );
+  }
+
+  Future<void> sendMessage({required ModelsProvider modelProvider}) async {
+    try {
+      setState(() {
+        _isTyping = true;
+        chatList
+            .add(ChatModel(message: _textEditingController.text, chatIndex: 0));
+        focusNode.unfocus();
+      });
+
+      log(_textEditingController.text);
+
+      chatList.addAll(await NetworkHelper.postQuery(
+        prompt: _textEditingController.text,
+        modelId: modelProvider.getCurrentModel,
+      ));
+    } catch (error) {
+      log(error.toString());
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(error.toString()),
+          backgroundColor: Colors.redAccent,
+        ),
+      );
+    } finally {
+      setState(() {
+        scrollListToEnd();
+        _textEditingController.clear();
+        _isTyping = false;
+      });
+    }
+  }
+
+  void scrollListToEnd() {
+    _listScrollController.animateTo(
+      _listScrollController.position.maxScrollExtent,
+      duration: const Duration(milliseconds: 50),
+      curve: Curves.easeIn,
     );
   }
 }

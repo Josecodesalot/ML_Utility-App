@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:ml_utility/ChatGPT/services/assets_manager.dart';
 import 'package:ml_utility/ChatGPT/widgets/text_widget.dart';
@@ -18,6 +19,9 @@ class ChatWidget extends StatelessWidget {
       child: SafeArea(
         child: Column(
           children: [
+            const SizedBox(
+              height: 4.0,
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
@@ -34,9 +38,25 @@ class ChatWidget extends StatelessWidget {
                     width: 10,
                   ),
                   Flexible(
-                    child: TextWidget(
-                      label: message,
-                    ),
+                    child: index == 0
+                        ? TextWidget(
+                            label: message,
+                          )
+                        : DefaultTextStyle(
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            child: AnimatedTextKit(
+                              displayFullTextOnTap: true,
+                              isRepeatingAnimation: false,
+                              totalRepeatCount: 1,
+                              animatedTexts: [
+                                TyperAnimatedText(message.trim())
+                              ],
+                            ),
+                          ),
                   ),
                 ],
               ),
