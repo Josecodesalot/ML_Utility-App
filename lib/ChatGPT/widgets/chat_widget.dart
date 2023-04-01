@@ -6,11 +6,16 @@ import 'package:ml_utility/ChatGPT/widgets/text_widget.dart';
 import '../constants/constants.dart';
 
 class ChatWidget extends StatelessWidget {
-  const ChatWidget({Key? key, required this.message, required this.role})
+  const ChatWidget(
+      {Key? key,
+      required this.message,
+      required this.role,
+      required this.animateIndex})
       : super(key: key);
 
   final String message;
   final String role;
+  final int animateIndex;
 
   @override
   Widget build(BuildContext context) {

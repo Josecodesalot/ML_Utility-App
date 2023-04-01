@@ -13,6 +13,10 @@ class ChatProvider with ChangeNotifier {
   ChatModel get getLatestQuery => chatList[chatList.length - 1];
 
   void addMessage({required String message, required String role}) {
+    // int animateIndex = 0;
+    // if (role == "assistant") {
+    //   animateIndex = 1;
+    // }
     chatList.add(ChatModel(content: message, role: role));
     notifyListeners();
 

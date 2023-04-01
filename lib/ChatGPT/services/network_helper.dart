@@ -2,18 +2,22 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:ml_utility/ChatGPT/constants/api_constants.dart';
 import 'package:ml_utility/ChatGPT/providers/chat_provider.dart';
+import 'package:ml_utility/ChatGPT/screens/error_screen.dart';
 
 import '../constants/auth.dart';
 
 class NetworkHelper {
   static Future<bool> chatQuery(
-      List<Map<String, dynamic>> listData, ChatProvider chatProvider) async {
+      {required List<Map<String, dynamic>> listData,
+      required ChatProvider chatProvider,
+      required BuildContext context}) async {
     try {
       var response = await http.post(
-        Uri.parse("$BASE_URL/chat/completionss"),
+        Uri.parse("$BASE_URL/chat/completions"),
         headers: {
           "Authorization": "Bearer $OPENAI_API_KEY",
           "Content-Type": "application/json",
@@ -37,7 +41,10 @@ class NetworkHelper {
     } catch (error) {
       log("Network Helper");
       log(error.toString());
-
+      Navigator.of(context).pop();
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => const ErrorScreen()));
+      chatProvider.initList();
       return false;
     }
   }
