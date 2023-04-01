@@ -34,7 +34,5 @@ class ChatProvider with ChangeNotifier {
   void initList() {
     chatList.clear();
     notifyListeners();
-
-    log(chatList.map((e) => e.toJson()).toList().toString());
   }
 }
