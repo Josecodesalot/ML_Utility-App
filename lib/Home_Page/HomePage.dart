@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ml_utility/ChatGPT/providers/models_provider.dart';
+import 'package:ml_utility/ChatGPT/providers/chat_provider.dart';
 import 'package:ml_utility/ChatGPT/screens/chat_screen.dart';
 import 'package:ml_utility/utilities/constants.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -118,19 +118,18 @@ class _HomePageState extends State<HomePage> {
                   onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => MultiProvider(
-                        providers: [
-                          ChangeNotifierProvider(
-                              create: (_) => ModelsProvider()),
-                        ],
-                        child: const ChatScreen(),
-                      ),
+                      builder: (context) => MultiProvider(providers: [
+                        ChangeNotifierProvider(
+                          create: (_) => ChatProvider(),
+                        )
+                      ], child: const ChatScreen()),
                     ),
                   ),
                   child: Container(
                     height: containerDim,
                     width: double.infinity,
-                    margin: EdgeInsets.symmetric(horizontal: 35, vertical: 15),
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 35, vertical: 15),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(17),
                       boxShadow: containerShadow,

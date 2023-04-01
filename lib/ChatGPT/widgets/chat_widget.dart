@@ -6,16 +6,16 @@ import 'package:ml_utility/ChatGPT/widgets/text_widget.dart';
 import '../constants/constants.dart';
 
 class ChatWidget extends StatelessWidget {
-  const ChatWidget({Key? key, required this.message, required this.index})
+  const ChatWidget({Key? key, required this.message, required this.role})
       : super(key: key);
 
   final String message;
-  final int index;
+  final String role;
 
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: index == 0 ? chatGPTScaffoldColor : chatGPTCardColor,
+      color: role == "user" ? chatGPTScaffoldColor : chatGPTCardColor,
       child: SafeArea(
         child: Column(
           children: [
@@ -28,7 +28,7 @@ class ChatWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Image.asset(
-                    index == 0
+                    role == "user"
                         ? AssetsManager.userImage
                         : AssetsManager.botLogo,
                     height: 40,
@@ -38,7 +38,7 @@ class ChatWidget extends StatelessWidget {
                     width: 10,
                   ),
                   Flexible(
-                    child: index == 0
+                    child: role == "user"
                         ? TextWidget(
                             label: message,
                           )
