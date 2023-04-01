@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:ml_utility/ChatGPT/providers/chat_provider.dart';
 import 'package:ml_utility/ChatGPT/screens/error_screen.dart';
+import 'package:ml_utility/ChatGPT/screens/gpt_intro_screen.dart';
 import 'package:ml_utility/ChatGPT/services/network_helper.dart';
 import 'package:ml_utility/ChatGPT/widgets/chat_widget.dart';
 import 'package:provider/provider.dart';
@@ -68,10 +69,13 @@ class _ChatScreenState extends State<ChatScreen> {
                 child: ListView.builder(
                   controller: _listScrollController,
                   itemBuilder: (context, index) {
+                    int animateIndex =
+                        chatProvider.getQuery(index).animateIndex;
+                    chatProvider.setAnimateIndex(index);
                     return ChatWidget(
                       message: chatProvider.getQuery(index).content,
                       role: chatProvider.getQuery(index).role,
-                      animateIndex: 1,
+                      animateIndex: animateIndex,
                     );
                   },
                   itemCount: chatProvider.getChatList.length,
@@ -99,7 +103,8 @@ class _ChatScreenState extends State<ChatScreen> {
                           controller: _textEditingController,
                           style: const TextStyle(color: Colors.white),
                           onSubmitted: (value) async {
-                            if (_textEditingController.text.isNotEmpty) {
+                            if (_textEditingController.text.isNotEmpty &&
+                                !_isTyping) {
                               await sendMessage(chatProvider);
                             }
                           },
@@ -110,7 +115,8 @@ class _ChatScreenState extends State<ChatScreen> {
                       ),
                       IconButton(
                         onPressed: () async {
-                          if (_textEditingController.text.isNotEmpty) {
+                          if (_textEditingController.text.isNotEmpty &&
+                              !_isTyping) {
                             await sendMessage(chatProvider);
                           }
                         },

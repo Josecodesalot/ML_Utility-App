@@ -1,9 +1,10 @@
 class ChatModel {
   final String content;
   final String role;
-  // final int animateIndex;
+  int animateIndex;
 
-  ChatModel({required this.content, required this.role});
+  ChatModel(
+      {required this.animateIndex, required this.content, required this.role});
 
   Map<String, dynamic> toJson() {
     return {"role": role, "content": content};
