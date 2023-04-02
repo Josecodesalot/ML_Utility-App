@@ -48,6 +48,7 @@ dependencies:
   fluttertoast: ^8.2.1
   mobile_scanner: ^3.2.0
   flutter_linkify: ^5.0.2
+  url_launcher: ^6.1.10
 
 dev_dependencies:
   flutter_test:

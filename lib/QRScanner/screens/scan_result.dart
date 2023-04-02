@@ -1,7 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile_scanner/src/objects/barcode.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ScanResult extends StatelessWidget {
   final List<Barcode> barcodes;
@@ -65,9 +70,19 @@ class ScanResult extends StatelessWidget {
               const SizedBox(
                 height: 10.0,
               ),
-              SelectableText(
-                barcodes[0].rawValue.toString(),
-                style: const TextStyle(color: Colors.black),
+              SelectableLinkify(
+                text: barcodes[0].rawValue.toString(),
+                textAlign: TextAlign.start,
+                options: const LinkifyOptions(humanize: false),
+                onOpen: (link) async {
+                  try {
+                    await launchUrl(Uri.parse(link.url));
+                  } catch (error) {
+                    Fluttertoast.showToast(msg: "Failed to launch");
+                    log('Could not launch $link');
+                    log(error.toString());
+                  }
+                },
               ),
             ],
           ),
