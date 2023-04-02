@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ml_utility/ChatGPT/providers/chat_provider.dart';
 import 'package:ml_utility/ChatGPT/screens/chat_screen.dart';
+import 'package:ml_utility/QRScanner/screens/qr_code_scanner.dart';
 import 'package:ml_utility/utilities/constants.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -91,25 +92,33 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                     ),
-                    Container(
-                      height: containerDim,
-                      width: containerDim,
-                      margin: containerMargin,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(17),
-                        boxShadow: containerShadow,
-                        color: containerColor,
+                    GestureDetector(
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const QRCodeScanner(),
+                        ),
                       ),
-                      child: Center(
-                        child: Text("QR Code Scanner",
-                            textAlign: TextAlign.center,
-                            style: GoogleFonts.getFont(
-                              'Raleway',
-                              textStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20.sp,
-                                  fontWeight: FontWeight.w400),
-                            )),
+                      child: Container(
+                        height: containerDim,
+                        width: containerDim,
+                        margin: containerMargin,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(17),
+                          boxShadow: containerShadow,
+                          color: containerColor,
+                        ),
+                        child: Center(
+                          child: Text("QR Code Scanner",
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.getFont(
+                                'Raleway',
+                                textStyle: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20.sp,
+                                    fontWeight: FontWeight.w400),
+                              )),
+                        ),
                       ),
                     ),
                   ],
