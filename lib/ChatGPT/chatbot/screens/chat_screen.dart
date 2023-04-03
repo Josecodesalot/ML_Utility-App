@@ -4,12 +4,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:ml_utility/ChatGPT/providers/chat_provider.dart';
-import 'package:ml_utility/ChatGPT/screens/error_screen.dart';
 import 'package:ml_utility/ChatGPT/services/network_helper.dart';
 import 'package:ml_utility/ChatGPT/widgets/chat_widget.dart';
 import 'package:provider/provider.dart';
 
-import '../constants/constants.dart';
+import '../../constants/constants.dart';
+import 'error_screen.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key}) : super(key: key);
@@ -127,7 +127,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     ],
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),

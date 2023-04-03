@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ml_utility/ChatGPT/chatbot/screens/chat_screen.dart';
 import 'package:ml_utility/ChatGPT/providers/chat_provider.dart';
-import 'package:ml_utility/ChatGPT/screens/chat_screen.dart';
 import 'package:ml_utility/QRScanner/screens/qr_code_scanner.dart';
 import 'package:ml_utility/utilities/constants.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
+import '../ChatGPT/AI_Image_Generation/image_chat_screen.dart';
+import '../ChatGPT/AI_Image_Generation/providers/image_provider.dart';
 import '../Text_Recognition/screen/text_recognition_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -18,8 +20,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool _isPermissionGranted = false;
-
   late final Future<void> _future;
 
   @override
@@ -30,7 +30,6 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _requestCameraPermission() async {
     final status = await Permission.camera.request();
-    _isPermissionGranted = status == PermissionStatus.granted;
   }
 
   @override
@@ -135,7 +134,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   child: Container(
-                    height: containerDim,
+                    height: containerDim - 25,
                     width: double.infinity,
                     margin: const EdgeInsets.symmetric(
                         horizontal: 35, vertical: 15),
@@ -150,7 +149,7 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Image.asset(
                             "assets/images/chatgpt_logo.png",
-                            scale: 4.3,
+                            scale: 5.3,
                           ),
                           const SizedBox(
                             width: 20.0,
@@ -161,8 +160,57 @@ class _HomePageState extends State<HomePage> {
                               'Raleway',
                               textStyle: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 25.sp,
+                                  fontSize: 20.sp,
                                   fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MultiProvider(providers: [
+                        ChangeNotifierProvider(
+                          create: (_) => AI_ImageProvider(),
+                        )
+                      ], child: const ImageChatScreen()),
+                    ),
+                  ),
+                  child: Container(
+                    height: containerDim - 25,
+                    width: double.infinity,
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 35, vertical: 15),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(17),
+                      boxShadow: containerShadow,
+                      color: containerColor,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            "assets/images/chatgpt_logo.png",
+                            scale: 5.3,
+                          ),
+                          const SizedBox(
+                            width: 20.0,
+                          ),
+                          Flexible(
+                            child: Text(
+                              "AI Image Generation",
+                              style: GoogleFonts.getFont(
+                                'Raleway',
+                                textStyle: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 21.sp,
+                                    fontWeight: FontWeight.w500),
+                              ),
                             ),
                           ),
                         ],

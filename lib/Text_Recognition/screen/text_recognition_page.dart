@@ -46,6 +46,8 @@ class _TextRecognitionState extends State<TextRecognition>
         title: const Text(
           "Text Recognition",
         ),
+        backgroundColor: Colors.transparent,
+        elevation: 1.2,
       ),
       backgroundColor: Colors.black87,
       floatingActionButton: FloatingActionBubble(
@@ -125,7 +127,7 @@ class _TextRecognitionState extends State<TextRecognition>
                 margin: EdgeInsets.only(bottom: 20, top: 5),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(18),
-                  color: Colors.blueAccent,
+                  color: Colors.blueGrey,
                 ),
                 child: isScanning
                     ? const Center(

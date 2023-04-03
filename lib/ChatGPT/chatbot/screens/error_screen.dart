@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-import '../constants/constants.dart';
-import '../providers/chat_provider.dart';
+import '../../constants/constants.dart';
+import '../../providers/chat_provider.dart';
 import 'chat_screen.dart';
 
 class ErrorScreen extends StatelessWidget {
