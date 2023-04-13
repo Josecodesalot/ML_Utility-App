@@ -6,7 +6,7 @@
    - Remember what user said earlier in the conversation
    - Decline inappropriate requests
  - QR Code Scanner with Link Support
- - Generate AI Images with DALL-E model (Under Development)
+ - Generate AI Images with DALL-E model
  
  Tech Stack Used : 
  - Flutter Framework
