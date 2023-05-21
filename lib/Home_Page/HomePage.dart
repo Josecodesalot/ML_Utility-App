@@ -46,8 +46,7 @@ class _HomePageState extends State<HomePage> {
                 Text(
                   "Utility App",
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.getFont(
-                    'Raleway',
+                  style: GoogleFonts.raleway(
                     textStyle: TextStyle(
                         fontWeight: FontWeight.w400,
                         color: Colors.white,
@@ -81,8 +80,7 @@ class _HomePageState extends State<HomePage> {
                         child: Center(
                           child: Text("Text Recognition",
                               textAlign: TextAlign.center,
-                              style: GoogleFonts.getFont(
-                                'Raleway',
+                              style: GoogleFonts.raleway(
                                 textStyle: TextStyle(
                                     color: Colors.white,
                                     fontSize: 20.sp,
@@ -110,8 +108,7 @@ class _HomePageState extends State<HomePage> {
                         child: Center(
                           child: Text("QR Code Scanner",
                               textAlign: TextAlign.center,
-                              style: GoogleFonts.getFont(
-                                'Raleway',
+                              style: GoogleFonts.raleway(
                                 textStyle: TextStyle(
                                     color: Colors.white,
                                     fontSize: 20.sp,
@@ -204,8 +201,7 @@ class _HomePageState extends State<HomePage> {
                           Flexible(
                             child: Text(
                               "AI Image Generation",
-                              style: GoogleFonts.getFont(
-                                'Raleway',
+                              style: GoogleFonts.raleway(
                                 textStyle: TextStyle(
                                     color: Colors.white,
                                     fontSize: 21.sp,

@@ -55,12 +55,11 @@ class ScanResult extends StatelessWidget {
                         ),
                         Text(
                           "Copy Text",
-                          style: GoogleFonts.getFont('Raleway',
-                              textStyle: const TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 12,
-                              )),
+                          style: GoogleFonts.raleway(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 12,
+                          ),
                         )
                       ],
                     ),
