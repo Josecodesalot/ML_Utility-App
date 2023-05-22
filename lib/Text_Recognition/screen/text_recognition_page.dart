@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:floating_action_bubble/floating_action_bubble.dart';
@@ -7,6 +8,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+
+import '../../ChatGPT/chatbot/screens/error_screen.dart';
+import '../../ChatGPT/providers/chat_provider.dart';
+import '../../ChatGPT/services/network_helper.dart';
 
 class TextRecognition extends StatefulWidget {
   const TextRecognition({Key? key}) : super(key: key);
@@ -188,6 +193,33 @@ class _TextRecognitionState extends State<TextRecognition>
         text = "";
       },
     );
+  }
+
+  Future<void> auto_structure(ChatProvider chatProvider) async {
+    try {
+      String content = text;
+      chatProvider.addMessage(
+        message: content,
+        role: "system",
+      );
+
+      bool status = await NetworkHelper.chatQuery(
+          listData: chatProvider.getChatList,
+          chatProvider: chatProvider,
+          context: context);
+
+      if (!status) {
+        throw const HttpException("Error");
+      }
+    } catch (error) {
+      log(error.toString());
+      chatProvider.initList();
+      const ErrorScreen();
+    } finally {
+      final response = chatProvider.chatList.last;
+
+      ///do shopify thing
+    }
   }
 
   Future<void> getTextFromImage() async {

@@ -154,6 +154,7 @@ class _ChatScreenState extends State<ChatScreen> {
           listData: chatProvider.getChatList,
           chatProvider: chatProvider,
           context: context);
+
       if (!status) {
         throw const HttpException("Error");
       }
