@@ -2,11 +2,11 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-Future<void> main() async {
+Future<void> api() async {
   //This is the latest API version of 2023-04
   final apiVersion = "2023-04";
   //BaseURI should have your domain
-  final baseUri = '5f4a5b.myshopify.com';
+  const baseUri = '5f4a5b.myshopify.com';
 
   final endpoint = 'products.json';
   //Secret Token

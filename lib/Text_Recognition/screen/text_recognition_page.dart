@@ -196,10 +196,25 @@ class _TextRecognitionState extends State<TextRecognition>
   }
 
   Future<void> auto_structure(ChatProvider chatProvider) async {
+    var data = {
+      'product': {
+        'title': 'Your Product Name',
+        'body_html': '<strong>Your Product Description</strong>',
+        'vendor': 'Your Vendor Name',
+        'product_type': 'Your Product Type',
+        'tags': 'Your Product, Tags',
+      }
+    };
+
+    var shopify_structure = '''
+[${data.toString()}]
+  ''';
     try {
-      String content = text;
+      String prompt =
+          "please structure the following:\n${text}\nin this structure:\n${shopify_structure},";
+
       chatProvider.addMessage(
-        message: content,
+        message: prompt,
         role: "system",
       );
 
