@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:floating_action_bubble/floating_action_bubble.dart';
@@ -7,12 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:ml_utility/services/auto_structure.dart';
 import 'package:permission_handler/permission_handler.dart';
-
-import '../../ChatGPT/chatbot/screens/error_screen.dart';
-import '../../ChatGPT/providers/chat_provider.dart';
-import '../../ChatGPT/services/network_helper.dart';
-import '../../services/shopify_api.dart';
 
 class TextRecognition extends StatefulWidget {
   const TextRecognition({Key? key}) : super(key: key);
@@ -196,47 +191,6 @@ class _TextRecognitionState extends State<TextRecognition>
     );
   }
 
-  Future<void> auto_structure(ChatProvider chatProvider) async {
-    var data = {
-      'product': {
-        'title': 'Your Product Name',
-        'body_html': '<strong>Your Product Description</strong>',
-        'vendor': 'Your Vendor Name',
-        'product_type': 'Your Product Type',
-        'tags': 'Your Product, Tags',
-      }
-    };
-
-    var shopify_structure = '''
-[${data.toString()}]
-  ''';
-    try {
-      String prompt =
-          "please structure the following:\n${text}\nin this structure:\n${shopify_structure},";
-
-      chatProvider.addMessage(
-        message: prompt,
-        role: "system",
-      );
-
-      bool status = await NetworkHelper.chatQuery(
-          listData: chatProvider.getChatList,
-          chatProvider: chatProvider,
-          context: context);
-
-      if (!status) {
-        throw const HttpException("Error");
-      }
-    } catch (error) {
-      log(error.toString());
-      chatProvider.initList();
-      const ErrorScreen();
-    } finally {
-      final response = chatProvider.chatList.last;
-      await shopify_create_products(response.content);
-    }
-  }
-
   Future<void> getTextFromImage() async {
     final InputImage inputImage = InputImage.fromFile(_image!);
     final TextRecognizer textRecognizer = TextRecognizer();
@@ -246,12 +200,13 @@ class _TextRecognitionState extends State<TextRecognition>
     textRecognizer.close();
     print(text);
     setState(
-      () {
+      () async {
         isScanning = false;
         if (text == "") {
           this.text = "No Text Recognised";
         } else {
           this.text = text;
+          await auto_structure(context: context, text: text);
         }
       },
     );
