@@ -12,6 +12,7 @@ import 'package:permission_handler/permission_handler.dart';
 import '../../ChatGPT/chatbot/screens/error_screen.dart';
 import '../../ChatGPT/providers/chat_provider.dart';
 import '../../ChatGPT/services/network_helper.dart';
+import '../../services/shopify_api.dart';
 
 class TextRecognition extends StatefulWidget {
   const TextRecognition({Key? key}) : super(key: key);
@@ -232,8 +233,7 @@ class _TextRecognitionState extends State<TextRecognition>
       const ErrorScreen();
     } finally {
       final response = chatProvider.chatList.last;
-
-      ///do shopify thing
+      await shopify_create_products(response.content);
     }
   }
 
