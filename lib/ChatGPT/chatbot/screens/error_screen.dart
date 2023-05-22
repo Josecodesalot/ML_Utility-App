@@ -41,8 +41,7 @@ class ErrorScreen extends StatelessWidget {
             ),
             Text("Whoops! ChatGPT threw us an error",
                 textAlign: TextAlign.center,
-                style: GoogleFonts.getFont(
-                  'Raleway',
+                style: GoogleFonts.raleway(
                   textStyle: const TextStyle(
                       color: Colors.white,
                       fontSize: 18,
@@ -51,8 +50,7 @@ class ErrorScreen extends StatelessWidget {
             Text(
               "Please try again later",
               textAlign: TextAlign.center,
-              style: GoogleFonts.getFont(
-                'Raleway',
+              style: GoogleFonts.raleway(
                 textStyle: const TextStyle(
                     color: Colors.white30,
                     fontSize: 15,
@@ -84,8 +82,7 @@ class ErrorScreen extends StatelessWidget {
                 ),
                 child: Text(
                   "Try Again",
-                  style: GoogleFonts.getFont(
-                    'Raleway',
+                  style: GoogleFonts.raleway(
                     textStyle: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w400,
