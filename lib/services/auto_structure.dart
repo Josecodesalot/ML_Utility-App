@@ -13,12 +13,17 @@ final chatProvider = ChatProvider();
 Future<void> auto_structure(
     {required BuildContext context, required String text}) async {
   var data = {
-    "product": {
-      "title": "Your Product Name",
-      "body_html": "<strong>Your Product Description</strong>",
-      "vendo": "Your Vendor Name",
-      "product_type": "Your Product Type",
-      "tags": "Your Product, Tags",
+    'product': {
+      'title': 'Your Product Name',
+      'body_html': '<strong>Your Product Description</strong>',
+      'vendor': 'Your Vendor Name',
+      'product_type': 'Your Product Type',
+      'tags': 'Your Product, Tags',
+      "variants": [
+        {
+          "price": "19.00",
+        }
+      ],
     }
   };
   var shopify_structure = '''
