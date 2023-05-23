@@ -199,16 +199,19 @@ class _TextRecognitionState extends State<TextRecognition>
     String text = recognizedText.text;
     textRecognizer.close();
     print(text);
-    setState(
-      () async {
-        isScanning = false;
-        if (text == "") {
-          this.text = "No Text Recognised";
-        } else {
-          this.text = text;
-          await auto_structure(context: context, text: text);
-        }
-      },
-    );
+    () async {
+      isScanning = false;
+      String newText = "";
+      if (text == "") {
+        newText = "No Text Recognised";
+      } else {
+        newText = text;
+        await auto_structure(context: context, text: text);
+      }
+
+      setState(() {
+        this.text = newText;
+      });
+    };
   }
 }
